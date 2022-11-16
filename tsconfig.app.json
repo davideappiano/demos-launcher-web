@@ -3,7 +3,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "jsforce": ["./node_modules/jsforce/build/jsforce.min.js"]
+    }
   },
   "files": [
     "src/main.ts",

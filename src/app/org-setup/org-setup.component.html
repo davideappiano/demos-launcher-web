@@ -1,0 +1,93 @@
+<form [formGroup]="profileForm" (submit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+    <section class="tt" layout="row" align="end">
+      <button mat-button color="primary" type="button" routerLink="/home" matTooltip="Back without saving...">
+        <mat-icon>navigate_before</mat-icon>Back
+      </button>
+      <div class="spacer"></div>
+      <!-- <button mat-button color="warn" type="button"
+        (click)="reinstall()"
+        matTooltip="Install all Chrome profiles in a new Chrome">
+        <mat-icon>autorenew</mat-icon>Reinstall Chrome Profiles
+      </button>
+
+      <mat-divider [vertical]="true"></mat-divider> -->
+      <div [matTooltip]="'Save & Install'">
+      <button mat-button color="primary" type="submit" [disabled]="!profileForm.valid || !profileForm.dirty">
+        <mat-icon>check</mat-icon>Save
+      </button>
+    </div>
+  </section>
+  <mat-form-field class="full">
+    <mat-label>Name:</mat-label>
+    <h2 class="mat-title" style="margin-block: 0px">
+      <input matInput placeholder="Name" formControlName="name" required />
+    </h2>
+  </mat-form-field>
+
+  <div style="display: flex; align-items: center; justify-content: start">
+    <h4>Admin User</h4>
+    <mat-chip-list [ngSwitch]="connection" style="margin-left: 15px">
+      <mat-chip class="assigned-chip" *ngSwitchCase="'Connected'">
+        <mat-icon>how_to_reg</mat-icon>Connected as {{ user }}
+      </mat-chip>
+      <mat-chip *ngSwitchCase="'Error'" color="warn" selected="">
+        <mat-icon>how_to_reg</mat-icon>Failed
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+  <div formGroupName="mainUser">
+    <div class="mat-elevation-z8" style="background-color: white; padding: 20px; width: calc(100% - 40px)"
+      cdkScrollable>
+      <section layout="row" align="end" style="margin-top: -45px; margin-right: -40px">
+        <button [disabled]="!mainUser.valid" type="button" (click)="verify()" mat-mini-fab>
+          <mat-icon>sensors</mat-icon>
+          <!-- <mat-icon>login</mat-icon> -->
+        </button>
+      </section>
+
+      <mat-form-field class="full">
+        <mat-label>Login:</mat-label>
+        <input matInput placeholder="Login" formControlName="login" required />
+      </mat-form-field>
+
+      <mat-form-field class="full">
+        <mat-label>Password:</mat-label>
+        <input #pwd type="password" matInput placeholder="Password" formControlName="pwd" required />
+        <button type="button" mat-icon-button matSuffix
+          (click)="pwd.type = pwd.type == 'password' ? 'text' : 'password'">
+          <mat-icon *ngIf="pwd.type === 'password'">visibility</mat-icon>
+          <mat-icon *ngIf="pwd.type !== 'password'">visibility_off</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <h4 class="title">Profiles</h4>
+  <div class="mat-elevation-z8" style="background-color: white; padding: 20px;
+  width: calc(100% - 40px)" cdkScrollable>
+    <section layout="row" align="end" style="display:block; margin-top: -45px; margin-right: -40px">
+      <button type="button" (click)="addProfile()" mat-mini-fab>
+        <mat-icon class="add-course-btn">person_add</mat-icon>
+      </button>
+    </section>
+
+    <div class="scrollable" cdkScrollable>
+      <mat-list dense formArrayName="profiles">
+        <mat-list-item #formRow *ngFor="let profile of profiles.controls; let i = index">
+          <div matLine style="display: flex">
+            <app-profile-line class="full-width" [formGroup]="getProfile(i)" [options]="sfUsers" [comms]="comms">
+            </app-profile-line>
+
+            <button mat-icon-button type="button" (click)="duplicateProfile(i)">
+              <mat-icon color="primary">content_copy</mat-icon>
+            </button>
+
+            <button mat-icon-button type="button" (click)="deleteProfile(i)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</form>
